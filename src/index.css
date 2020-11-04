@@ -11,3 +11,81 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+  font-family: "VW Text";
+}
+
+.campaignWrapper {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  background-color: white;
+}
+
+.campaignWrapper > * {
+  padding: 16px;
+}
+
+.campaignDetails > * {
+  margin: 0;
+  padding: 4px 0;
+  
+}
+
+.campaignName {
+  font-weight: bold;
+}
+
+.campaignDate {
+  color: black;
+  opacity: 0.6;
+}
+
+.campaignOrg {
+  color: #5b08a4;
+  opacity: 0.6;
+}
+
+.campaignDate, .campaignOrg {
+  font-size: 12px;
+}
+
+.campaignWrapper + hr {
+  margin: 0 16px;
+  height: 0;
+  border: 1px solid #dfe4e8;
+}
+
+.campaignIcon, .campaignExpand {
+  display: flex;
+  align-items: center;
+}
+
+.Spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.toolbar {
+  background-color: #eff3f5;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+
+.toolbar > button {
+  border: none;
+}
