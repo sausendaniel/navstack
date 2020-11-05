@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CampaignIcon from "../assets/CampaignIcon";
 import CampaignExpand from "../assets/CampaignExpand";
 import Refresh from "../assets/Refresh";
 import useFullPageLoader from "../../hooks/useFullPageLoader";
+import useSeek from "../../hooks/useSeek";
 
 const Home = ({ navigation }) => {
-  const [entries, setEntries] = useState([]);
   const [loader, showLoader, hideLoader] = useFullPageLoader();
-  const [swap, setSwap] = useState(2);
+  const { seek, seekData } = useSeek();
 
   async function reload() {
     showLoader();
-    let { data } = await fetch(`https://reqres.in/api/users?page=${swap}`).then(res => res.json())
-    setEntries(data)
-    swap === 2 ? setSwap(1) : setSwap(2);
+    let params = new URLSearchParams(window.location.search);
+    //let cpf = params.get("cpf");
+    let dn = params.get("dn");
+    await seek(`/api/hub/2.0/CampanhasByDN/${dn ? dn : "0441"}`);
     hideLoader();
   }
 
@@ -28,16 +29,16 @@ const Home = ({ navigation }) => {
           <Refresh />
         </button>
       </div>
-      {entries.map((i, j) => (
+      {seekData.length ? seekData.map((i, j) => (
         <div key={j}>
           <div className="campaignWrapper">
             <div className="campaignIcon">
-              <CampaignIcon />
+              <CampaignIcon type={i.Tipo} />
             </div>
             <div className="campaignDetails">
-              <p className="campaignName">{i.first_name} {i.last_name}</p>
-              <p className="campaignDate">Termina em: {i.id}</p>
-              <p className="campaignOrg">{i.email}</p>
+              <p className="campaignName">{i.Nome}</p>
+              <p className="campaignDate">Termina em: {i.EndDate || "--"}</p>
+              <p className="campaignOrg">{i.Origem}</p>
             </div>
             <div className="campaignExpand" onClick={() => { navigation.navigate("Details", i) }}>
               <CampaignExpand />
@@ -45,7 +46,7 @@ const Home = ({ navigation }) => {
           </div>
           <hr />
         </div>
-      ))}
+      )) : <h1 style={{ textAlign: "center" }}>Nenhuma campanha encontrada.</h1>}
       {loader}
     </div>
   );

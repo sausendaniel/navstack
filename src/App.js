@@ -14,7 +14,8 @@ const headerOptions = {
   headerTintColor: '#ffffff',
   headerTitleAlign: "center",
   headerTitleStyle: {
-    fontWeight: 'bold',
+    fontFamily: "VW Text",
+    fontSize: "20px"
   },
   animationEnabled: true,
   animationTypeForReplace: "pop"
@@ -33,7 +34,7 @@ const App = () => {
           )
         })} />
         <Stack.Screen name="Details" component={Details} options={({route}) => ({ 
-          title: route.params.first_name, 
+          title: route.params.Nome, 
           headerBackImage: () => <BackImage />,
           ...headerOptions
         })} />

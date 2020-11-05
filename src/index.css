@@ -30,6 +30,10 @@ code {
   padding: 16px;
 }
 
+.campaignDetails {
+  padding: 16px 0;
+}
+
 .campaignDetails > * {
   margin: 0;
   padding: 4px 0;
@@ -88,4 +92,9 @@ code {
 
 .toolbar > button {
   border: none;
+  background-color: #eff3f5;
+}
+
+.toolbar svg {
+  background-color: #eff3f5;
 }
