@@ -1,19 +1,45 @@
+import { useState } from 'react';
 import qs from 'qs';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import useFullPageLoader from "../../hooks/useFullPageLoader";
+import { cpfMask, phoneMask } from "../../utils/masks";
 
 const Details = ({ route, navigation }) => {
   const { ...entry } = route.params;
   const [loader, showLoader, hideLoader] = useFullPageLoader();
+  const [cpf, setCpf] = useState("");
+  const [phone, setPhone] = useState("");
+  const MySwal = withReactContent(Swal);
+
+  function handleCpf(e) {
+    setCpf(cpfMask(e.target.value))
+  }
+
+  function handlePhone(e) {
+    setPhone(phoneMask(e.target.value));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let formData = new FormData(e.target);
     let formValues = {};
+    let formData = new FormData(e.target);
     formData.forEach((value, key) => formValues[key] = value);
+    formValues.CpfCnpj = formValues.CpfCnpj.replace(/[^\w\s]/gi, '').replace(" ", "");
+    formValues.Telefones = formValues.Telefones.replace(/[^\w\s]/gi, '').replace(" ", "");
+    let params = new URLSearchParams(window.location.search);
+    let cpf = params.get("cpf");
+    let dn = params.get("dn");
+    let parsedPhone = {
+      Tipo_Tel: 1,
+      DDD: formValues.Telefones.substring(0, 2),
+      Telefone: formValues.Telefones.substring(3)
+    };
     let nonFormValues = {
       Origem_Id: 4,
       Sub_Origem_Id: 46,
-      DN: "0441",
+      DN: dn,
+      CPF_Vendedor: cpf,
       Tipo_Cliente: 1,
       Nacionalidade_Id: 0,
       Model_Year: 0,
@@ -27,10 +53,9 @@ const Details = ({ route, navigation }) => {
       Natureza: 4,
       Record_Type_Id: 1,
       Campanha: entry.IdCampanha,
-      Telefones: [{ Tipo_Tel: 1, DDD: `${formValues.Telefones[0]}${formValues.Telefones[1]}`, Telefone: formValues.Telefones }]
+      Telefones: [parsedPhone]
     }
     Object.assign(formValues, nonFormValues);
-    console.log(formValues);
     let jsonObj = qs.stringify(formValues);
 
     showLoader();
@@ -43,22 +68,28 @@ const Details = ({ route, navigation }) => {
       method: 'POST',
       headers: { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${access_token}` },
       body: jsonObj
-    }).then(res => res.text())
-    console.log(response);
+    }).then(res => res.json())
+    MySwal.fire({
+      title: <p>{response.Message}</p>
+    }).then(() => {
+      if (response.StatusMessage === "OK") {
+        navigation.goBack();
+      }
+    })
     hideLoader();
   }
 
   return (
     <>
-      <pre>{JSON.stringify(entry, null, 4)}</pre>
       <form id="campaignForm" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Nome" name="Nome" />
-        <input type="email" placeholder="Email" name="Email" />
-        <input type="phone" placeholder="DDD + Telefone" name="Telefones" />
-        <input type="text" placeholder="CPF" name="CPF_Vendedor" />
-        <select name="Produto_Desejado">
+        <input type="text" placeholder="Nome" name="Nome" required />
+        <input type="email" placeholder="Email" name="Email" required />
+        <input type="tel" placeholder="DDD + Telefone" name="Telefones" onChange={handlePhone} value={phone} required />
+        <input type="text" placeholder="CPF Cliente" name="CpfCnpj" onChange={handleCpf} value={cpf} />
+        <select name="Produto_Desejado" required>
+        <option value="">Selecione um produto</option>
           {entry.Produtos.map((i, j) => (
-            <option key={j}>{i}</option>
+            <option key={j} value={i}>{i}</option>
           ))}
         </select>
         <button type="submit">Enviar</button>

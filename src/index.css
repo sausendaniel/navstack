@@ -98,3 +98,36 @@ code {
 .toolbar svg {
   background-color: #eff3f5;
 }
+
+#campaignForm {
+  background-color: white;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  padding: 16px;
+}
+
+#campaignForm > * {
+  border: 0;
+  border-bottom: 2px solid #eff3f5;
+  padding: 8px 0;
+  margin: 0 0 24px;
+  transition: 0.3s border ease-in-out;
+  width: 80%;
+}
+
+#campaignForm > *:focus {
+  border-color: #5b08a4;
+}
+
+#campaignForm select {
+  background-color: white;
+}
+
+#campaignForm select:invalid {
+  color: #757575;
+}
+
+#campaignForm option {
+  color: black;
+}

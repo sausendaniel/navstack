@@ -15,6 +15,8 @@
     "react-native-safe-area-context": "^3.1.8",
     "react-native-web": "^0.14.5",
     "react-scripts": "4.0.0",
+    "sweetalert2": "^10.9.0",
+    "sweetalert2-react-content": "^3.2.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

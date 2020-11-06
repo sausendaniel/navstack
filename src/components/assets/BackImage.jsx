@@ -5,7 +5,13 @@ let styles = {
   margin: 0,
   color: "#ffffff",
   display: "flex",
-  alignItems: "center"
+  alignItems: "center",
+  position: "fixed",
+  top: 0,
+  left: 0,
+  zIndex: 999,
+  width: "100vw",
+  paddingLeft: "12px"
 }
 
 const BackImage = () => (
