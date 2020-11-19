@@ -28,7 +28,7 @@ const Details = ({ route, navigation }) => {
     formValues.CpfCnpj = formValues.CpfCnpj.replace(/[^\w\s]/gi, '').replace(" ", "");
     formValues.Telefones = formValues.Telefones.replace(/[^\w\s]/gi, '').replace(" ", "");
     let params = new URLSearchParams(window.location.search);
-    let cpf = params.get("cpf");
+    let cpf = params.get("cpfVendedor");
     let dn = params.get("dn");
     let parsedPhone = {
       Tipo_Tel: 1,

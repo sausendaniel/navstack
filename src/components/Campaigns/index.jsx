@@ -32,16 +32,16 @@ const Home = ({ navigation }) => {
     let tokenIsValid = await fetch(`${process.env.REACT_APP_ENDPOINT}/saibamais/seguranca/autenticar`, {
       headers: { "Authorization": `Bearer ${access_token}`, "Custom": `Bearer ${token}` }
     }).then(res => res.text())
-    if (tokenIsValid) {
+    if (tokenIsValid === "\"Token válido\"") {
       reload();
       setValid(true)
     }
   }
 
   useEffect(() => {
-    //validate()
-    reload();
-    setValid(true);
+    validate()
+    // reload();
+    // setValid(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -56,7 +56,7 @@ const Home = ({ navigation }) => {
         </div>
         {seekData.length ? seekData.map((i, j) => (
           <div key={j}>
-            <div className="campaignWrapper">
+            <div className="campaignWrapper" onClick={() => { navigation.navigate("Details", i) }}>
               <div className="campaignIcon">
                 <CampaignIcon type={i.Tipo} />
               </div>

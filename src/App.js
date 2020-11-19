@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './components/Campaigns';
 import Details from './components/CampaignDetails';
@@ -21,17 +21,20 @@ const headerOptions = {
   animationTypeForReplace: "pop"
 }
 
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white'
+  },
+};
+
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
         <Stack.Screen name="Campanhas" component={Home} options={() => ({ 
-          ...headerOptions, 
-          headerLeft: () => (
-            <div style={{ padding: "0 12px" }} onClick={() => window.history.back()}>
-              <BackImage />
-            </div>
-          )
+          ...headerOptions
         })} />
         <Stack.Screen name="Details" component={Details} options={({route}) => ({ 
           title: route.params.Nome, 
