@@ -15,22 +15,22 @@ const Home = ({ navigation }) => {
     showLoader();
     let params = new URLSearchParams(window.location.search);
     let dn = params.get("dn");
-    await seek(`/api/hub/2.0/CampanhasByDN/${dn ? dn : ""}`);
+    await seek(`/CampanhasByDN/${dn ? dn : ""}`);
     hideLoader();
   }
 
   async function validate() {
     showLoader();
-    let { access_token } = await fetch(`${process.env.REACT_APP_ENDPOINT}/token`, {
+    let { access_token } = await fetch(`${process.env.REACT_APP_AUTH_API}/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: qs.stringify({ grant_type: "client_credentials", client_id: process.env.REACT_APP_SECURITY_ID, client_secret: process.env.REACT_APP_SECURITY_SECRET })
+      body: qs.stringify({ grant_type: "client_credentials", client_id: process.env.REACT_APP_AUTH_KEY, client_secret: process.env.REACT_APP_AUTH_SECRET })
     }).then(res => res.json())
 
     let params = new URLSearchParams(window.location.search);
     let token = params.get("token");
-    let tokenIsValid = await fetch(`${process.env.REACT_APP_ENDPOINT}/saibamais/seguranca/autenticar`, {
-      headers: { "Authorization": `Bearer ${access_token}`, "Custom": `Bearer ${token}` }
+    let tokenIsValid = await fetch(`${process.env.REACT_APP_AUTH_API}/saibamais/seguranca/autenticar`, {
+      headers: { "authorization": `Bearer ${access_token}`, "custom": `Bearer ${token}` }
     }).then(res => res.text())
     if (tokenIsValid === "\"Token válido\"") {
       reload();
@@ -46,7 +46,6 @@ const Home = ({ navigation }) => {
   }, [])
 
   return (
-
     valid ? (
       <div style={{ backgroundColor: "white" }}>
         <div className="toolbar">
@@ -56,16 +55,16 @@ const Home = ({ navigation }) => {
         </div>
         {seekData.length ? seekData.map((i, j) => (
           <div key={j}>
-            <div className="campaignWrapper" onClick={() => { navigation.navigate("Details", i) }}>
+            <div className="campaignWrapper" onClick={() => navigation.navigate("Details", i)}>
               <div className="campaignIcon">
                 <CampaignIcon type={i.Tipo} />
               </div>
               <div className="campaignDetails">
                 <p className="campaignName">{i.Nome}</p>
-                <p className="campaignDate">Termina em: {i.EndDate || "--"}</p>
+                <p className="campaignDate">Começa em: {i.StarDate || "--"} \ Termina em: {i.EndDate || "--"}</p>
                 <p className="campaignOrg">{i.Origem}</p>
               </div>
-              <div className="campaignExpand" onClick={() => { navigation.navigate("Details", i) }}>
+              <div className="campaignExpand">
                 <CampaignExpand />
               </div>
             </div>

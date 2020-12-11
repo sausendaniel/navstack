@@ -28,6 +28,7 @@ code {
   display: grid;
   grid-template-columns: 1fr 10fr 1fr;
   background-color: white;
+  cursor: pointer;
 }
 
 .campaignWrapper > * {
@@ -97,6 +98,7 @@ code {
 .toolbar > button {
   border: none;
   background-color: #eff3f5;
+  cursor: pointer;
 }
 
 .toolbar svg {
@@ -134,4 +136,8 @@ code {
 
 #campaignForm option {
   color: black;
+}
+
+#campaignForm button {
+  cursor: pointer;
 }

@@ -59,12 +59,12 @@ const Details = ({ route, navigation }) => {
     let jsonObj = qs.stringify(formValues);
 
     showLoader();
-    let { access_token } = await fetch(`${process.env.REACT_APP_ENDPOINT}/token`, {
+    let { access_token } = await fetch(`${process.env.REACT_APP_AUTH_API}/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: qs.stringify({ grant_type: "client_credentials", client_id: process.env.REACT_APP_CLIENT_ID, client_secret: process.env.REACT_APP_CLIENT_SECRET })
+      body: qs.stringify({ grant_type: "client_credentials", client_id: process.env.REACT_APP_HUB_KEY, client_secret: process.env.REACT_APP_HUB_SECRET })
     }).then(res => res.json())
-    let response = await fetch(`${process.env.REACT_APP_ENDPOINT}/api/hub/2.0/salvaronline`, { 
+    let response = await fetch(`${process.env.REACT_APP_HUB_API}/salvaronline`, { 
       method: 'POST',
       headers: { "Content-Type": "application/x-www-form-urlencoded", "Authorization": `Bearer ${access_token}` },
       body: jsonObj
@@ -87,7 +87,7 @@ const Details = ({ route, navigation }) => {
         <input type="tel" placeholder="DDD + Telefone" name="Telefones" onChange={handlePhone} value={phone} required />
         <input type="text" placeholder="CPF Cliente" name="CpfCnpj" onChange={handleCpf} value={cpf} />
         <select name="Produto_Desejado" required>
-        <option value="">Selecione um produto</option>
+          <option value="">Selecione um produto</option>
           {entry.Produtos.map((i, j) => (
             <option key={j} value={i}>{i}</option>
           ))}
